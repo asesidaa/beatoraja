@@ -105,7 +105,7 @@ public class PortAudio
 		{
 			if( System.getProperty( "os.arch" ).contains( "64" ) )
 			{
-				System.load( "jportaudio_x64" );
+				System.loadLibrary( "jportaudio_x64" );
 			}
 			else
 			{
