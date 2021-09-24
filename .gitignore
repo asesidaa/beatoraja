@@ -17,3 +17,6 @@ b.bat
 /*.dll
 *.cim
 .idea/
+/target/
+beatoraja.iml
+dependency-reduced-pom.xml
