@@ -7,8 +7,8 @@ import bms.player.beatoraja.song.SongData;
 import bms.player.beatoraja.song.SongDatabaseAccessor;
 import bms.player.beatoraja.song.SongUtils;
 import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Application;
@@ -38,6 +38,8 @@ public class MainLoader extends Application {
 
 	private static VersionChecker version;
 
+    public static Lwjgl3Application app;
+
 	public static void play(Path f, BMSPlayerMode auto, boolean forceExit, Config config, PlayerConfig player, boolean songUpdated) {
 		if(config == null) {
 			config = Config.read();			
@@ -54,38 +56,43 @@ public class MainLoader extends Application {
 		try {
 			MainController main = new MainController(f, config, player, auto, songUpdated);
 
-			LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-			cfg.width = config.getResolution().width;
-			cfg.height = config.getResolution().height;
+			Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
 
-			// fullscreen
+			// refer to https://github.com/libgdx/libgdx/issues/4785
 			switch (config.getDisplaymode()) {
 				case FULLSCREEN:
-					cfg.fullscreen = true;
+					cfg.setAutoIconify(true);
+                    cfg.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
 					break;
 				case BORDERLESS:
-					System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
-					cfg.fullscreen = false;
+					var displayMode = Lwjgl3ApplicationConfiguration.getDisplayMode();
+                    cfg.setWindowedMode(displayMode.width, displayMode.height);
+                    cfg.setDecorated(false);
 					break;
 				case WINDOW:
-					cfg.fullscreen = false;
+					cfg.setWindowedMode(config.getResolution().width, config.getResolution().height);
 					break;
-			}
+                default:
+                    throw new IllegalStateException("Unexpected value: " + config.getDisplaymode());
+            }
 			// vSync
-			cfg.vSyncEnabled = config.isVsync();
-			cfg.backgroundFPS = config.getMaxFramePerSecond();
-			cfg.foregroundFPS = config.getMaxFramePerSecond();
-			cfg.title = MainController.getVersion();
-			
-			cfg.audioDeviceBufferSize = config.getAudioConfig().getDeviceBufferSize();
-			cfg.audioDeviceSimultaneousSources = config.getAudioConfig().getDeviceSimultaneousSources();
-			cfg.forceExit = forceExit;
+            cfg.useVsync(config.isVsync());
+            cfg.setForegroundFPS(config.getMaxFramePerSecond());
+            cfg.setIdleFPS(config.getMaxFramePerSecond());
+            cfg.setTitle(MainController.getVersion());
+
+            cfg.setAudioConfig(config.getAudioConfig().getDeviceSimultaneousSources(),
+                               config.getAudioConfig().getDeviceBufferSize(),
+                               9);
+
+
+			//cfg.forceExit = forceExit;
 			if(config.getAudioConfig().getDriver() != DriverType.OpenAL) {
-				LwjglApplicationConfiguration.disableAudio = true;				
+				cfg.disableAudio(true);
 			}
 			// System.setProperty("org.lwjgl.opengl.Display.allowSoftwareOpenGL",
 			// "true");
-			new LwjglApplication(main, cfg);
+			app = new Lwjgl3Application(main, cfg);
 
 //			Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
 //
@@ -125,11 +132,11 @@ public class MainLoader extends Application {
 	}
 
 	public static Graphics.DisplayMode[] getAvailableDisplayMode() {
-		return LwjglApplicationConfiguration.getDisplayModes();
+		return Lwjgl3ApplicationConfiguration.getDisplayModes();
 	}
 
 	public static Graphics.DisplayMode getDesktopDisplayMode() {
-		return LwjglApplicationConfiguration.getDesktopDisplayMode();
+		return Lwjgl3ApplicationConfiguration.getDisplayMode();
 	}
 	
 	public static SongDatabaseAccessor getScoreDatabaseAccessor() {

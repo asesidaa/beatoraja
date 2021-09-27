@@ -61,7 +61,8 @@ public class ShortPCM extends PCM<short[]> {
 	 *            サンプリングレート
 	 * @return サンプリングレート変更後のPCM
 	 */
-	public ShortPCM changeSampleRate(int sample) {
+	@Override
+    public ShortPCM changeSampleRate(int sample) {
 		short[] samples = getSample(sample);
 		int start = (Math.min((int)((long)this.start * sample / this.sampleRate), samples.length - 1) / channels) * channels;
 		int len = (Math.min((int)((long)this.len * sample / this.sampleRate), samples.length - start) / channels) * channels;
@@ -75,7 +76,8 @@ public class ShortPCM extends PCM<short[]> {
 	 *            再生速度。基準は1.0
 	 * @return 再生速度を変更したPCM
 	 */
-	public ShortPCM changeFrequency(float rate) {
+	@Override
+    public ShortPCM changeFrequency(float rate) {
 		short[] samples = getSample((int) (sampleRate / rate));
 		int start = (Math.min((int)((long)this.start / rate / this.sampleRate), samples.length - 1) / channels) * channels;
 		int len = (Math.min((int)((long)this.len / rate / this.sampleRate), samples.length - start) / channels) * channels;
@@ -109,7 +111,8 @@ public class ShortPCM extends PCM<short[]> {
 	 *            チャンネル数
 	 * @return チャンネル数を変更したPCM
 	 */
-	public ShortPCM changeChannels(int channels) {
+	@Override
+    public ShortPCM changeChannels(int channels) {
 		short[] samples = new short[this.sample.length * channels / this.channels];
 
 		for (long i = 0; i < samples.length / channels; i++) {

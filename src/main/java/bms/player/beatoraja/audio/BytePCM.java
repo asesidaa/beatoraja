@@ -54,7 +54,8 @@ public class BytePCM extends PCM<byte[]> {
 	 *            サンプリングレート
 	 * @return サンプリングレート変更後のPCM
 	 */
-	public BytePCM changeSampleRate(int sample) {
+	@Override
+    public BytePCM changeSampleRate(int sample) {
 		byte[] samples = getSample(sample);
 		int start = (Math.min((int)((long)this.start * sample / this.sampleRate), samples.length - 1) / channels) * channels;
 		int len = (Math.min((int)((long)this.len * sample / this.sampleRate), samples.length - start) / channels) * channels;
@@ -68,7 +69,8 @@ public class BytePCM extends PCM<byte[]> {
 	 *            再生速度。基準は1.0
 	 * @return 再生速度を変更したPCM
 	 */
-	public BytePCM changeFrequency(float rate) {
+	@Override
+    public BytePCM changeFrequency(float rate) {
 		byte[] samples = getSample((int) (sampleRate / rate));
 		int start = (Math.min((int)((long)this.start / rate / this.sampleRate), samples.length - 1) / channels) * channels;
 		int len = (Math.min((int)((long)this.len / rate / this.sampleRate), samples.length - start) / channels) * channels;
@@ -102,7 +104,8 @@ public class BytePCM extends PCM<byte[]> {
 	 *            チャンネル数
 	 * @return チャンネル数を変更したPCM
 	 */
-	public BytePCM changeChannels(int channels) {
+	@Override
+    public BytePCM changeChannels(int channels) {
 		byte[] samples = new byte[this.sample.length * channels / this.channels];
 
 		for (long i = 0; i < samples.length / channels; i++) {

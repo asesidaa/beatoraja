@@ -60,7 +60,8 @@ public class FloatPCM extends PCM<float[]> {
 	 *            サンプリングレート
 	 * @return サンプリングレート変更後のPCM
 	 */
-	public FloatPCM changeSampleRate(int sample) {
+	@Override
+    public FloatPCM changeSampleRate(int sample) {
 		float[] samples = getSample(sample);
 		int start = (Math.min((int)((long)this.start * sample / this.sampleRate), samples.length - 1) / channels) * channels;
 		int len = (Math.min((int)((long)this.len * sample / this.sampleRate), samples.length - start) / channels) * channels;
@@ -74,7 +75,8 @@ public class FloatPCM extends PCM<float[]> {
 	 *            再生速度。基準は1.0
 	 * @return 再生速度を変更したPCM
 	 */
-	public FloatPCM changeFrequency(float rate) {
+	@Override
+    public FloatPCM changeFrequency(float rate) {
 		float[] samples = getSample((int) (sampleRate / rate));
 		int start = (Math.min((int)((long)this.start / rate / this.sampleRate), samples.length - 1) / channels) * channels;
 		int len = (Math.min((int)((long)this.len / rate / this.sampleRate), samples.length - start) / channels) * channels;
@@ -108,7 +110,8 @@ public class FloatPCM extends PCM<float[]> {
 	 *            チャンネル数
 	 * @return チャンネル数を変更したPCM
 	 */
-	public FloatPCM changeChannels(int channels) {
+	@Override
+    public FloatPCM changeChannels(int channels) {
 		float[] samples = new float[this.sample.length * channels / this.channels];
 
 		for (long i = 0; i < samples.length / channels; i++) {

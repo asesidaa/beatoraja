@@ -479,7 +479,8 @@ public class Config implements Validatable {
 		this.skinpath = skinpath;
 	}
 
-	public boolean validate() {
+	@Override
+    public boolean validate() {
 		displaymode = (displaymode != null) ? displaymode : DisplayMode.WINDOW;
 		resolution = (resolution != null) ? resolution : Resolution.HD;
 

@@ -59,12 +59,12 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>17</version>
+            <version>17.0.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>17</version>
+            <version>17.0.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -152,7 +152,7 @@
         <!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx-backend-lwjgl -->
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-backend-lwjgl</artifactId>
+            <artifactId>gdx-backend-lwjgl3</artifactId>
             <version>1.10.0</version>
         </dependency>
 
@@ -175,6 +175,13 @@
             <version>1.9.13</version>
             <classifier>natives-desktop</classifier>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx-controllers-lwjgl3 -->
+        <dependency>
+            <groupId>com.badlogicgames.gdx</groupId>
+            <artifactId>gdx-controllers-lwjgl3</artifactId>
+            <version>1.9.13</version>
+        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/com.badlogicgames.gdx/gdx-freetype-platform -->
         <dependency>

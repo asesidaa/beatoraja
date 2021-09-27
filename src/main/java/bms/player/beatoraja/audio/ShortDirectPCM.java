@@ -64,7 +64,8 @@ public class ShortDirectPCM extends PCM<ByteBuffer> {
 	 *            サンプリングレート
 	 * @return サンプリングレート変更後のPCM
 	 */
-	public ShortDirectPCM changeSampleRate(int sample) {
+	@Override
+    public ShortDirectPCM changeSampleRate(int sample) {
 		ByteBuffer samples = getSample(sample);
 		int start = (Math.min((int)((long)this.start * sample / this.sampleRate), samples.limit() / 2 - 1) / channels) * channels;
 		int len = (Math.min((int)((long)this.len * sample / this.sampleRate), samples.limit() / 2 - start) / channels) * channels;
@@ -78,7 +79,8 @@ public class ShortDirectPCM extends PCM<ByteBuffer> {
 	 *            再生速度。基準は1.0
 	 * @return 再生速度を変更したPCM
 	 */
-	public ShortDirectPCM changeFrequency(float rate) {
+	@Override
+    public ShortDirectPCM changeFrequency(float rate) {
 		ByteBuffer samples = getSample((int) (sampleRate / rate));
 		int start = (Math.min((int)((long)this.start / rate / this.sampleRate), samples.limit()  / 2 - 1) / channels) * channels;
 		int len = (Math.min((int)((long)this.len / rate / this.sampleRate), samples.limit() / 2 - start) / channels) * channels;
@@ -112,7 +114,8 @@ public class ShortDirectPCM extends PCM<ByteBuffer> {
 	 *            チャンネル数
 	 * @return チャンネル数を変更したPCM
 	 */
-	public ShortDirectPCM changeChannels(int channels) {
+	@Override
+    public ShortDirectPCM changeChannels(int channels) {
 		ByteBuffer samples = getDirectByteBuffer((this.sample.limit() / 2) * channels / this.channels * 2);
 
 		for (long i = 0; i < samples.limit() / 2 / channels; i++) {

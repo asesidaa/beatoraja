@@ -8,7 +8,8 @@ import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
-import org.lwjgl.input.Mouse;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
+import org.lwjgl.glfw.GLFW;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
@@ -145,8 +146,9 @@ public class MainController extends ApplicationAdapter {
 
 		if (config.isEnableIpfs()) {
 			Path ipfspath = Paths.get("ipfs").toAbsolutePath();
-			if (!ipfspath.toFile().exists())
-				ipfspath.toFile().mkdirs();
+			if (!ipfspath.toFile().exists()) {
+                ipfspath.toFile().mkdirs();
+            }
 			List<String> roots = new ArrayList<>(Arrays.asList(getConfig().getBmsroot()));
 			if (ipfspath.toFile().exists() && !roots.contains(ipfspath.toString())) {
 				roots.add(ipfspath.toString());
@@ -340,6 +342,10 @@ public class MainController extends ApplicationAdapter {
 		} else {
 			changeState(MainStateType.MUSICSELECT);
 		}
+        var graphics = (Lwjgl3Graphics)Gdx.graphics;
+        var window = graphics.getWindow();
+        var windowHandle = window.getWindowHandle();
+        GLFW.glfwSetInputMode(windowHandle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_HIDDEN);
 
 		Logger.getGlobal().info("初期化時間(ms) : " + (System.currentTimeMillis() - t));
 
@@ -480,7 +486,8 @@ public class MainController extends ApplicationAdapter {
             	input.setMouseMoved(false);
             	mouseMovedTime = time;
 			}
-			Mouse.setGrabbed(current == bmsplayer && time > mouseMovedTime + 5000 && Mouse.isInsideWindow());
+
+			//Mouse.setGrabbed(current == bmsplayer && time > mouseMovedTime + 5000 && Mouse.isInsideWindow());
 
 			// FPS表示切替
             if (input.isActivated(KeyCommand.SHOW_FPS)) {
@@ -780,7 +787,8 @@ public class MainController extends ApplicationAdapter {
 			this.path = path;
 		}
 
-		public void run() {
+		@Override
+        public void run() {
 			Message message = messageRenderer.addMessage(this.message, Color.CYAN, 1);
 			getSongDatabase().updateSongDatas(path, config.getBmsroot(), false, getInfoDatabase());
 			message.stop();
@@ -801,7 +809,8 @@ public class MainController extends ApplicationAdapter {
 			accessor = bar;
 		}
 
-		public void run() {
+		@Override
+        public void run() {
 			Message message = messageRenderer.addMessage(this.message, Color.CYAN, 1);
 			TableData td = accessor.getAccessor().read();
 			if (td != null) {
@@ -817,7 +826,8 @@ public class MainController extends ApplicationAdapter {
 			super(message);
 		}
 
-		public void run() {
+		@Override
+        public void run() {
 			Message message = messageRenderer.addMessage(this.message, Color.LIME, 1);
 			while (download != null && download.isDownload() && download.getMessage() != null) {
 				message.setText(download.getMessage());
