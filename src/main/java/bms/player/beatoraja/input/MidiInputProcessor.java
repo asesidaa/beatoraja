@@ -91,7 +91,8 @@ public class MidiInputProcessor extends BMSPlayerInputDevice implements AutoClos
 		this.starttime = starttime;
 	}
 
-	public void clear() {
+	@Override
+    public void clear() {
 		lastPressedKeyAvailable = false;
 	}
 

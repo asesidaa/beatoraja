@@ -132,7 +132,8 @@ public class BMControllerInputProcessor extends BMSPlayerInputDevice {
 		return name;
 	}
 
-	public void clear() {
+	@Override
+    public void clear() {
 		// Arrays.fill(buttonstate, false);
 		// Arrays.fill(axis, 0);
 		Arrays.fill(buttonchanged, false);

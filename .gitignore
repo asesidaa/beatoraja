@@ -20,3 +20,4 @@ b.bat
 /target/
 beatoraja.iml
 dependency-reduced-pom.xml
+/beatoraja-master.iml

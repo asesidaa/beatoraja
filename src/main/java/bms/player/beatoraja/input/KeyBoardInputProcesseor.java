@@ -105,7 +105,8 @@ public class KeyBoardInputProcesseor extends BMSPlayerInputDevice implements Inp
 		return true;
 	}
 
-	public void clear() {
+	@Override
+    public void clear() {
 		// Arrays.fill(keystate, false);
 		Arrays.fill(keytime, -duration);
 		lastPressedKey = -1;
